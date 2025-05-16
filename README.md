@@ -30,15 +30,39 @@ Create a `.env` file or set the following environment variables:
 * `PINECONE_ENV` - Pinecone environment (e.g., `us-west1-gcp`)
 * `PINECONE_INDEX_NAME` - Name of your Pinecone index
 
-### Running the Application
+## Technologies Used
+- FastAPI
+- Pinecone
+- BERT Embeddings (SentenceTransformers)
+- GitPython
 
-Start the FastAPI server:
+## Setup Instructions
 
-```bash
-uvicorn app.main:app --reload
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/yourrepo.git
+   cd yourrepo
+   ```
 
-The API will be available at `http://localhost:8000`.
+2. Create and activate a virtual environment:
+   ```powershell
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
+
+   .\venv\Scripts\Activate.ps1
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the FastAPI app:
+   ```bash
+   python -m app.main
+   ```
+
+5. Visit the interactive API docs:
+   - Open: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## Usage
 
@@ -53,31 +77,17 @@ The API will be available at `http://localhost:8000`.
 * `POST /query/`
   Parameters:
 
-  * `query`: Text query to search embeddings
-
+  * `query`: Query the vector store
 ### Example
 
 ```bash
 curl -X POST "http://localhost:8000/process-repo/?repo_url=https://github.com/username/repo&branch=main"
 ```
 
-## Troubleshooting
-
-* **PermissionError on Windows during repo cleanup**:
-  The app uses `shutil.rmtree` with an error handler to delete the cloned repo directory safely. Ensure no files are open or locked by other programs. Run the app with appropriate permissions.
-
-* **Pinecone API Value Error - Invalid `id` length**:
-  The vector `id` must be 512 characters or fewer. Check that document IDs generated for embeddings comply with this constraint.
-
 ## Contributing
 
 Feel free to open issues or pull requests to improve the project.
 
 ## License
+This project is licensed under the MIT License.
 
-MIT License
-
-```
-
-If you want me to save this as a file for you, just say the word!
-```
