@@ -1,93 +1,77 @@
-# godspeed_1
+# godspeed
 
-This repository provides a FastAPI-based service that clones a GitHub repository, extracts and processes its files, generates embeddings using BERT, and upserts them to Pinecone for vector search.
+# GS Documentation Embedder + RAG Agent (Godspeed Framework)
+
+This project is a Retrieval-Augmented Generation (RAG) solution built using the Godspeed framework. It allows users to ingest GitHub documentation or local files into a vector database and query them using natural language powered by LLMs.
+
+ Bonus: Built using the Godspeed Framework as specified in the assignment.
+
+---
+
+# Vector Search App
+
+This is a FastAPI application that provides a vector search functionality. It allows users to upload and process GitHub repositories, and then query the processed documents using a natural language interface.
+
+
+## Project Structure
+
+```
+├── app/               # Contains API code and logic
+├── repo_clone/        # Temporary folder for cloned GitHub docs
+├── .env               # Environment variables (e.g., OpenAI key)
+├── .gitignore
+├── requirements.txt   # Python dependencies
+├── run.sh             # Startup script
+├── gs_rag_env/        # Virtual environment folder
+```
+
+---
 
 ## Features
 
-- Clone and extract all files from a specified GitHub repository and branch.
-- Generate document embeddings using a BERT model.
-- Store and search embeddings efficiently using Pinecone vector database.
-- FastAPI backend with endpoints for processing repositories and querying.
+* Process GitHub repositories and extract all files
+* Convert text to embeddings using a BERT model
+* Upsert documents with embeddings into a Pinecone vector search database
+* Query the vector search database using a natural language interface
+* Return top-k relevant documents based on the query
 
-## Setup and Installation
+## Endpoints
 
-### Prerequisites
+### 1. Root Endpoint
 
-- Python 3.8 or higher
-- Git installed and accessible in your PATH
-- Pinecone account and API key
-- Install required Python packages:
+* `GET /`: Returns a welcome message indicating that the app is running.
 
+### 2. Process Repository Endpoint
+
+* `POST /process-repo/`: Processes a GitHub repository and extracts all files.
+	+ Parameters:
+		- `repo_url`: The URL of the GitHub repository to process.
+		- `branch`: The branch of the repository to process (default: "main").
+	+ Returns: A success message indicating that the documents have been processed and upserted.
+
+### 3. Query Endpoint
+
+* `POST /query/`: Queries the vector search database using a natural language interface.
+	+ Parameters:
+		- `text`: The query text to search for.
+		- `top_k`: The number of top-k relevant documents to return (default: 5).
+	+ Returns: A list of relevant documents based on the query.
+
+## Dependencies
+
+* FastAPI
+* Pinecone
+* Transformers (for BERT model)
+* PyTorch
+
+## Environment Variables
+
+* `PINECONE_API_KEY`: The API key for the Pinecone service.
+* `PINECONE_ENVIRONMENT`: The environment for the Pinecone service (default: "gcp-starter").
+* `PINECONE_INDEX_NAME`: The name of the Pinecone index (default: "my-index").
+
+## Running the App
+
+To run the app, simply execute the following command:
 ```bash
-pip install -r requirements.txt
-````
-
-### Environment Variables
-
-Create a `.env` file or set the following environment variables:
-
-* `PINECONE_API_KEY` - Your Pinecone API key
-* `PINECONE_ENV` - Pinecone environment (e.g., `us-west1-gcp`)
-* `PINECONE_INDEX_NAME` - Name of your Pinecone index
-
-## Technologies Used
-- FastAPI
-- Pinecone
-- BERT Embeddings (SentenceTransformers)
-- GitPython
-
-## Setup Instructions
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/yourrepo.git
-   cd yourrepo
-   ```
-
-2. Create and activate a virtual environment:
-   ```powershell
-   Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-
-   .\venv\Scripts\Activate.ps1
-   ```
-
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Run the FastAPI app:
-   ```bash
-   python -m app.main
-   ```
-
-5. Visit the interactive API docs:
-   - Open: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
-## Usage
-
-### Endpoints
-
-* `POST /process-repo/`
-  Parameters:
-
-  * `repo_url`: URL of the GitHub repository to clone
-  * `branch`: Branch to clone (default: main)
-
-* `POST /query/`
-  Parameters:
-
-  * `query`: Query the vector store
-### Example
-
-```bash
-curl -X POST "http://localhost:8000/process-repo/?repo_url=https://github.com/username/repo&branch=main"
-```
-
-## Contributing
-
-Feel free to open issues or pull requests to improve the project.
-
-## License
-This project is licensed under the MIT License.
-
+uvicorn main:app --host 0.0.0.0 --port 8000
