@@ -1,5 +1,10 @@
 # godspeed
 
+GS Documentation
+For detailed usage and setup, refer to the official Godspeed documentation: https://godspeed.systems/docs/
+
+
+
 # GS Documentation Embedder + RAG Agent (Godspeed Framework)
 
 This project is a Retrieval-Augmented Generation (RAG) solution built using the Godspeed framework. It allows users to ingest GitHub documentation or local files into a vector database and query them using natural language powered by LLMs.
